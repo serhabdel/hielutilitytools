@@ -39,6 +39,10 @@ If you find this tool helpful, consider supporting the development by buying me 
 - Batch processing capabilities
 - High-quality output files
 - Progress tracking for all operations
+## Screenshots
+![image](https://github.com/user-attachments/assets/c09a567a-7538-4293-9353-82f20213af7f)
+![image](https://github.com/user-attachments/assets/810f5276-23e0-4264-86c8-7a6443555135)
+![image](https://github.com/user-attachments/assets/69fbe574-ee7a-444b-8880-df63882eb84a)
 
 ## 🛠️ Technical Features
 
@@ -70,8 +74,3 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 ## 📧 Contact
 
 Abdelhalim Serhani - [@serhabdel](https://buymeacoffee.com/serhabdel)
-
-## 🙏 Acknowledgments
-
-- Thanks to all contributors who have helped this project grow
-- Special thanks to the open-source community for the amazing tools and libraries

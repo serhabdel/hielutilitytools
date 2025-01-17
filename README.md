@@ -1,104 +1,77 @@
-# Hiel Utility Suite 🏢
+# Hiel Utility Tools
 
-## 🚀 Hiel Utility Suite
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-Support-orange.svg)](https://buymeacoffee.com/serhabdel)
 
-### 🔧 Technology Stack
-- **GUI Framework**: PySide6 (Qt for Python)
-- **Language**: Python 3.9+
-- **Architecture**: Modern, modular design
+A powerful desktop utility suite built with Python and PySide6, offering a wide range of file conversion and manipulation tools.
 
-### 🛠 Tool Categories
-- **Document Tools**
-  - PDF Converter
-  - PDF to DOCX
-  - PDF to Excel
+## 🎯 Support the Project
 
-- **Image Tools**
-  - Logo Resizer
-  - Images to PDF
-  - Image Compressor
+If you find this tool helpful, consider supporting the development by buying me a coffee:
 
-- **Presentation Tools**
-  - PPT Converter
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/serhabdel)
 
-### 🎨 UI/UX Principles
-- Sidebar-based navigation
-- Dynamic theme support (Light/Dark modes)
-- Responsive and intuitive design
-- Cross-platform compatibility
+## 🚀 Features
 
-### 🌐 Internationalization
-- Localization support
-- Easy language switching
+### PDF Tools
+- **PDF to Images**: Convert PDF files to high-quality images
+- **PDF to DOCX**: Convert PDF documents to editable Word documents
+- **PDF to Excel**: Extract tables from PDF files to Excel spreadsheets
+- **PDF Compressor**: Reduce PDF file size while maintaining quality
+- **PPT Converter**: Convert PowerPoint presentations to various formats
 
-### 🔒 Theme Management
-- System theme detection
-- User theme preference persistence
-- Customizable color schemes
+### Image Tools
+- **Logo Resizer**: Resize logos with professional presets
+- **Android Logo Resizer**: Generate Android app icons in all required sizes
+- **Background Remover**: Remove image backgrounds automatically
+- **Image Upscaler**: Enhance image resolution using AI
+- **Images to PDF**: Convert multiple images to a single PDF file
 
-## 🔧 Technical Highlights
-- PySide6 for cross-platform UI
-- Dynamic theming with system theme detection
-- Localization support
-- Responsive design
+### Web Tools
+- **Web Content Converter**: Extract and convert web content to various formats
 
-## 🌈 Theme Features
-- Automatic system theme detection
-- Manual theme toggling
-- Persistent theme preferences
-- High contrast modes
+## ✨ Features Highlights
 
-## 🌍 Localization
+- Modern and intuitive user interface
+- Dark and light theme support
 - Multi-language support
-- Easy translation management
-- Fallback language mechanisms
+- Drag and drop file support
+- Batch processing capabilities
+- High-quality output files
+- Progress tracking for all operations
 
-## 🛠️ Tools Overview
-- PDF Conversion Utilities
-- Image Processing Tools
-- Presentation Converters
-- Color Management
+## 🛠️ Technical Features
 
-## 📊 Performance Metrics
-- Lightweight application
-- Minimal resource consumption
-- Quick startup and tool switching
+- Built with Python and PySide6
+- Clean architecture design
+- Efficient file processing
+- Memory-optimized operations
+- Cross-platform compatibility
+- Modern UI/UX design principles
 
-## 🔧 Technical Specifications
-### Core Technologies
-- PySide6 for cross-platform UI
-- Python-i18n for internationalization
-### GUI Framework
-- PySide6 provides a modern, performant, and lightweight GUI framework
+## 🎨 Themes
+- Tokyo Night (Default)
+- Solarized Dark
+- Solarized Light
 
-### System Requirements
-- Python 3.9+
-- Windows 10/11
-- 4GB RAM
-- 500MB Disk Space
-
-## 📦 Dependencies
-- PySide6
-- python-i18n==0.3.9
-- Logging and monitoring utilities
-
-## 🚀 Quick Start
-1. Clone the repository
-2. Install dependencies: 
-   ```bash
-   pip install -r requirements.txt
-   ```
-3. Run the application:
-   ```bash
-   python main.py
-   ```
-
-## 🤝 Enterprise Support
-- Dedicated support channels
-- Regular security updates
-- Customization options available
-- Scalable licensing models
+## 🌐 Supported Languages
+- English
+- French
+- Spanish
 
 ## 📝 License
-Proprietary Enterprise Software
-© 2025 Hiel Technologies
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the issues page.
+
+## 📧 Contact
+
+Abdelhalim Serhani - [@serhabdel](https://buymeacoffee.com/serhabdel)
+
+## 🙏 Acknowledgments
+
+- Thanks to all contributors who have helped this project grow
+- Special thanks to the open-source community for the amazing tools and libraries

@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
+    QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
     QLabel, QListWidget, QFileDialog, QMessageBox,
     QLineEdit
 )
@@ -7,10 +7,12 @@ from PySide6.QtCore import Qt
 from PIL import Image
 import os
 from .base_tool import BaseTool
+from utils.app_theme import AppTheme
 
 class ImagesToPDF(BaseTool):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.theme = AppTheme()
         self.images = []
         self.setup_ui()
 
@@ -38,11 +40,11 @@ class ImagesToPDF(BaseTool):
 
         # Buttons
         btn_layout = QHBoxLayout()
-        
+
         self.add_btn = QPushButton("Add Images")
         self.remove_btn = QPushButton("Remove Selected")
         self.clear_btn = QPushButton("Clear All")
-        
+
         for btn in [self.add_btn, self.remove_btn, self.clear_btn]:
             btn.setFixedHeight(36)
             btn.setStyleSheet("""
@@ -61,13 +63,13 @@ class ImagesToPDF(BaseTool):
                 }
             """)
             btn_layout.addWidget(btn)
-        
+
         self.layout.addLayout(btn_layout)
 
         # Output file
         self.layout.addWidget(QLabel("Output PDF:"))
         output_layout = QHBoxLayout()
-        
+
         self.output_path = QLineEdit()
         self.output_path.setStyleSheet("""
             QLineEdit {
@@ -79,7 +81,7 @@ class ImagesToPDF(BaseTool):
             }
         """)
         output_layout.addWidget(self.output_path)
-        
+
         self.browse_btn = QPushButton("Browse")
         self.browse_btn.setFixedHeight(36)
         self.browse_btn.setStyleSheet("""
@@ -98,7 +100,7 @@ class ImagesToPDF(BaseTool):
             }
         """)
         output_layout.addWidget(self.browse_btn)
-        
+
         self.layout.addLayout(output_layout)
 
         # Convert button
@@ -136,7 +138,7 @@ class ImagesToPDF(BaseTool):
         initial_dir = ""
         if self.images:
             initial_dir = os.path.dirname(self.images[-1])
-            
+
         files, _ = QFileDialog.getOpenFileNames(
             self,
             "Select Images",
@@ -146,7 +148,7 @@ class ImagesToPDF(BaseTool):
         if files:
             self.images.extend(files)
             self.update_listbox()
-            
+
             # Auto-set output path if not set
             if not self.output_path.text() and len(self.images) > 0:
                 first_image = os.path.basename(self.images[0])
@@ -176,7 +178,7 @@ class ImagesToPDF(BaseTool):
         initial_dir = ""
         if self.images:
             initial_dir = os.path.dirname(self.images[0])
-        
+
         file_path, _ = QFileDialog.getSaveFileName(
             self,
             "Save PDF",
@@ -201,11 +203,11 @@ class ImagesToPDF(BaseTool):
             images = [Image.open(self.images[0])]
             # Convert and append other images
             images.extend([Image.open(img).convert('RGB') for img in self.images[1:]])
-            
+
             # Save as PDF
             images[0].save(
-                output_path, 
-                "PDF", 
+                output_path,
+                "PDF",
                 save_all=True,
                 append_images=images[1:],
                 resolution=100.0

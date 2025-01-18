@@ -1,15 +1,17 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QLineEdit, QFileDialog, QProgressBar,
     QMessageBox, QCheckBox
 )
 from PySide6.QtCore import Qt
 import os
 from pdf2docx import Converter
+from utils.app_theme import AppTheme
 
 class PDFtoDocx(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.theme = AppTheme()
         self.setup_ui()
 
     def setup_ui(self):

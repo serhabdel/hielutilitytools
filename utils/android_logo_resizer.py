@@ -1,15 +1,17 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QLineEdit, QFileDialog, QProgressBar,
     QMessageBox, QFrame, QCheckBox
 )
 from PySide6.QtCore import Qt
 from PIL import Image
 import os
+from utils.app_theme import AppTheme
 
 class AndroidLogoResizer(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.theme = AppTheme()
         self.sizes = {
             'mipmap-hdpi': (72, 72),
             'mipmap-mdpi': (48, 48),
@@ -31,7 +33,7 @@ class AndroidLogoResizer(QWidget):
 
         # Title
         title = QLabel("Android Logo Resizer")
-        title.setStyleSheet("font-size: 24px; color: white;")
+        title.setStyleSheet("font-size: 24px; color: white; margin-bottom: 20px;")
         layout.addWidget(title)
 
         # Content Frame
@@ -57,7 +59,7 @@ class AndroidLogoResizer(QWidget):
         self.input_path.setStyleSheet("""
             QLineEdit {
                 padding: 8px;
-                background: #363636;
+                background: #2d2d2d;
                 border: 1px solid #3d3d3d;
                 border-radius: 4px;
                 color: white;
@@ -150,7 +152,7 @@ class AndroidLogoResizer(QWidget):
         generate_btn = QPushButton("Generate Icons")
         generate_btn.setStyleSheet("""
             QPushButton {
-                padding: 12px;
+                padding: 12px 24px;
                 background: #4a90e2;
                 border: none;
                 border-radius: 4px;

@@ -1,4 +1,3 @@
-
 import sys
 import os
 
@@ -9,7 +8,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QIcon, QFont, QPalette, QColor
 from PySide6.QtCore import Qt, QSize
 
-from utils.app_theme import EnterpriseTheme
+from utils.app_theme import AppTheme
 from utils.localization import localization
 from utils.pdf_converter import PDFConverter
 from utils.pdf_to_docx import PDFtoDocx
@@ -200,7 +199,7 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(1200, 800)
         
         # Apply theme
-        self.theme = EnterpriseTheme()
+        self.theme = AppTheme()
         
         # Create central widget and main layout
         central_widget = QWidget()
@@ -281,7 +280,7 @@ def main():
     app.setStyle("Fusion")  # Use Fusion style for better gradient support
     
     # Apply the enterprise theme
-    enterprise_theme = EnterpriseTheme()
+    enterprise_theme = AppTheme()
     enterprise_theme.apply_theme(app)
     
     window = MainWindow()

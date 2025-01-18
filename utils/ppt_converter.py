@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QLineEdit, QFileDialog, QProgressBar,
     QMessageBox, QRadioButton, QButtonGroup, QFrame
 )
@@ -9,10 +9,12 @@ import fitz
 from pptx import Presentation
 from pptx.util import Inches
 import comtypes.client
+from utils.app_theme import AppTheme
 
 class PPTConverter(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.theme = AppTheme()
         self.setup_ui()
 
     def setup_ui(self):
@@ -22,7 +24,7 @@ class PPTConverter(QWidget):
 
         # Title
         title = QLabel("PPT/PDF Converter")
-        title.setStyleSheet("font-size: 24px; color: white;")
+        title.setStyleSheet("font-size: 24px; color: white; margin-bottom: 20px;")
         layout.addWidget(title)
 
         # Content Frame
@@ -59,7 +61,8 @@ class PPTConverter(QWidget):
                 background: #2d2d2d;
             }
             QRadioButton::indicator:checked {
-                background: qradialgradient(cx:0.5, cy:0.5, radius:0.4, fx:0.5, fy:0.5, stop:0 #4a90e2, stop:1 #2d2d2d);
+                background: qradialgradient(cx:0.5, cy:0.5, radius:0.4, fx:0.5, fy:0.5, 
+                    stop:0 #4a90e2, stop:1 #2d2d2d);
             }
         """
         self.ppt_to_pdf.setStyleSheet(radio_style)
@@ -72,9 +75,6 @@ class PPTConverter(QWidget):
         radio_layout.addStretch()
         content_layout.addLayout(radio_layout)
 
-        # Connect radio buttons to update file filters
-        self.button_group.buttonClicked.connect(self.update_file_paths)
-
         # Input File
         input_label = QLabel("Input File")
         input_label.setStyleSheet("color: #888; font-size: 12px;")
@@ -86,7 +86,7 @@ class PPTConverter(QWidget):
         self.input_path.setStyleSheet("""
             QLineEdit {
                 padding: 8px;
-                background: #363636;
+                background: #2d2d2d;
                 border: 1px solid #3d3d3d;
                 border-radius: 4px;
                 color: white;
@@ -149,7 +149,7 @@ class PPTConverter(QWidget):
         convert_btn = QPushButton("Convert")
         convert_btn.setStyleSheet("""
             QPushButton {
-                padding: 12px;
+                padding: 12px 24px;
                 background: #4a90e2;
                 border: none;
                 border-radius: 4px;
@@ -202,12 +202,12 @@ class PPTConverter(QWidget):
         try:
             powerpoint = comtypes.client.CreateObject("Powerpoint.Application")
             powerpoint.Visible = True
-            
+
             ppt = powerpoint.Presentations.Open(input_path)
             ppt.SaveAs(output_path, 32)  # 32 is the PDF format code
             ppt.Close()
             powerpoint.Quit()
-            
+
             return True
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to convert PPT to PDF: {str(e)}")
@@ -217,35 +217,35 @@ class PPTConverter(QWidget):
         try:
             # Create a new presentation
             prs = Presentation()
-            
+
             # Open PDF
             pdf_document = fitz.open(input_path)
             total_pages = len(pdf_document)
-            
+
             for page_num in range(total_pages):
                 # Add a slide
                 slide = prs.slides.add_slide(prs.slide_layouts[6])  # blank layout
-                
+
                 # Convert PDF page to image
                 page = pdf_document[page_num]
                 pix = page.get_pixmap(matrix=fitz.Matrix(2, 2))  # 2x scale for better quality
-                
+
                 # Save page as temporary image
                 temp_img = f"temp_slide_{page_num}.png"
                 pix.save(temp_img)
-                
+
                 # Add image to slide
                 slide.shapes.add_picture(temp_img, 0, 0, prs.slide_width, prs.slide_height)
-                
+
                 # Clean up temp file
                 os.remove(temp_img)
 
                 self.progress.setValue(int((page_num + 1) / total_pages * 100))
-            
+
             # Save presentation
             prs.save(output_path)
             pdf_document.close()
-            
+
             return True
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to convert PDF to PPT: {str(e)}")
@@ -280,3 +280,4 @@ class PPTConverter(QWidget):
         except Exception as e:
             self.progress.hide()
             QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
+

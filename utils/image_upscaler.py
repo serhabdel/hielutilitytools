@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QLineEdit, QFileDialog, QProgressBar,
     QMessageBox, QSpinBox, QComboBox
 )
@@ -9,6 +9,7 @@ import os
 import cv2
 import numpy as np
 from PIL import Image
+from utils.app_theme import AppTheme
 
 def upscale_image(image_path, scale_factor, method='bicubic'):
     # Read image with PIL for better format support
@@ -26,10 +27,10 @@ def upscale_image(image_path, scale_factor, method='bicubic'):
     new_width = int(width * scale_factor)
 
     if method.lower() == 'bicubic':
-        upscaled = cv2.resize(img_array, (new_width, new_height), 
+        upscaled = cv2.resize(img_array, (new_width, new_height),
                             interpolation=cv2.INTER_CUBIC)
     elif method.lower() == 'lanczos':
-        upscaled = cv2.resize(img_array, (new_width, new_height), 
+        upscaled = cv2.resize(img_array, (new_width, new_height),
                             interpolation=cv2.INTER_LANCZOS4)
     elif method.lower() == 'edsr':
         # Use OpenCV's built-in EDSR model
@@ -43,8 +44,8 @@ def upscale_image(image_path, scale_factor, method='bicubic'):
         # If we need more than 2x, use additional bicubic scaling
         if scale_factor > 2:
             remaining_scale = scale_factor / 2
-            upscaled = cv2.resize(upscaled, (new_width, new_height), 
-                                interpolation=cv2.INTER_CUBIC)
+            upscaled = cv2.resize(upscaled, (new_width, new_height),
+                                    interpolation=cv2.INTER_CUBIC)
     else:
         raise ValueError(f"Unknown upscaling method: {method}")
 
@@ -55,6 +56,7 @@ def upscale_image(image_path, scale_factor, method='bicubic'):
 class ImageUpscaler(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.theme = AppTheme()
         self.setup_ui()
         self.preview_image = None
 

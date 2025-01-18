@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QLineEdit, QFileDialog, QProgressBar,
     QMessageBox, QSpinBox, QComboBox, QCheckBox
 )
@@ -7,10 +7,12 @@ from PySide6.QtCore import Qt
 from PySide6.QtGui import QPixmap, QImage
 import os
 from PIL import Image
+from utils.app_theme import AppTheme
 
 class LogoResizer(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.theme = AppTheme()
         self.setup_ui()
         self.preview_image = None
 
@@ -115,7 +117,7 @@ class LogoResizer(QWidget):
 
         # Custom size inputs
         size_inputs = QHBoxLayout()
-        
+
         width_layout = QVBoxLayout()
         width_label = QLabel("Width")
         width_label.setStyleSheet("color: white;")
@@ -153,7 +155,7 @@ class LogoResizer(QWidget):
         """)
         height_layout.addWidget(self.height_input)
         size_inputs.addLayout(height_layout)
-        
+
         size_group.addLayout(size_inputs)
 
         # Maintain aspect ratio
@@ -297,7 +299,7 @@ class LogoResizer(QWidget):
     def on_preset_changed(self, index):
         if index == 0:  # Custom Size
             return
-        
+
         size = int(self.size_preset.currentText().split('x')[0])
         self.width_input.setValue(size)
         self.height_input.setValue(size)

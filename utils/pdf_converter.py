@@ -1,15 +1,17 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QLineEdit, QFileDialog, QSpinBox,
     QProgressBar, QMessageBox
 )
 from PySide6.QtCore import Qt
 import os
 import fitz
+from utils.app_theme import AppTheme
 
 class PDFConverter(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.theme = AppTheme()
         self.setup_ui()
 
     def setup_ui(self):

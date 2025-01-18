@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QLineEdit, QFileDialog, QProgressBar,
     QMessageBox, QCheckBox, QSpinBox
 )
@@ -7,10 +7,12 @@ from PySide6.QtCore import Qt
 import os
 import tabula
 import pandas as pd
+from utils.app_theme import AppTheme
 
 class PDFtoExcel(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.theme = AppTheme()
         self.setup_ui()
 
     def setup_ui(self):
@@ -114,7 +116,7 @@ class PDFtoExcel(QWidget):
         range_label = QLabel("Page Range:")
         range_label.setStyleSheet("color: white;")
         range_layout.addWidget(range_label)
-        
+
         self.start_page = QSpinBox()
         self.start_page.setMinimum(1)
         self.start_page.setStyleSheet("""
@@ -127,9 +129,9 @@ class PDFtoExcel(QWidget):
             }
         """)
         range_layout.addWidget(self.start_page)
-        
+
         range_layout.addWidget(QLabel("to"))
-        
+
         self.end_page = QSpinBox()
         self.end_page.setMinimum(1)
         self.end_page.setStyleSheet("""

@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QLineEdit, QFileDialog, QProgressBar,
     QMessageBox, QSpinBox, QComboBox
 )
@@ -9,10 +9,12 @@ import os
 from rembg import remove
 from PIL import Image
 import io
+from utils.app_theme import AppTheme
 
 class BackgroundRemover(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.theme = AppTheme()
         self.setup_ui()
         self.preview_image = None
 
@@ -166,7 +168,7 @@ class BackgroundRemover(QWidget):
 
             # Process image
             self.progress.setValue(30)
-            
+
             # Remove background
             output = remove(self.preview_image)
             self.progress.setValue(70)

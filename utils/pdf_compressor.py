@@ -1,15 +1,17 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QLineEdit, QFileDialog, QProgressBar,
     QMessageBox, QSlider, QFrame
 )
 from PySide6.QtCore import Qt
 import fitz
 import os
+from utils.app_theme import AppTheme
 
 class PDFCompressor(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.theme = AppTheme()
         self.setup_ui()
 
     def setup_ui(self):
@@ -19,7 +21,7 @@ class PDFCompressor(QWidget):
 
         # Title
         title = QLabel("PDF Compressor")
-        title.setStyleSheet("font-size: 24px; color: white;")
+        title.setStyleSheet("font-size: 24px; color: white; margin-bottom: 20px;")
         layout.addWidget(title)
 
         # Content Frame
@@ -45,7 +47,7 @@ class PDFCompressor(QWidget):
         self.input_path.setStyleSheet("""
             QLineEdit {
                 padding: 8px;
-                background: #363636;
+                background: #2d2d2d;
                 border: 1px solid #3d3d3d;
                 border-radius: 4px;
                 color: white;
@@ -105,7 +107,7 @@ class PDFCompressor(QWidget):
             QSlider::groove:horizontal {
                 border: 1px solid #3d3d3d;
                 height: 8px;
-                background: #363636;
+                background: #2d2d2d;
                 margin: 2px 0;
                 border-radius: 4px;
             }
@@ -143,7 +145,7 @@ class PDFCompressor(QWidget):
         compress_btn = QPushButton("Compress")
         compress_btn.setStyleSheet("""
             QPushButton {
-                padding: 12px;
+                padding: 12px 24px;
                 background: #4a90e2;
                 border: none;
                 border-radius: 4px;
@@ -211,17 +213,17 @@ class PDFCompressor(QWidget):
             for page_num in range(total_pages):
                 # Get the page
                 page = pdf_document[page_num]
-                
+
                 # Add page to new PDF
                 new_page = compressed_pdf.new_page(width=page.rect.width, height=page.rect.height)
-                
+
                 # Get page contents as image
                 pix = page.get_pixmap(matrix=fitz.Matrix(1, 1))
-                
+
                 # Convert to image and back with compression
                 img_data = pix.tobytes("png")
                 new_page.insert_image(new_page.rect, stream=img_data, compression=quality/100)
-                
+
                 self.progress.setValue(int((page_num + 1) / total_pages * 100))
 
             # Save the compressed PDF

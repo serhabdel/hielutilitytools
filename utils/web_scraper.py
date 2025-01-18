@@ -1,5 +1,5 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
+    QWidget, QVBoxLayout, QHBoxLayout, QLabel,
     QPushButton, QLineEdit, QFileDialog, QProgressBar,
     QMessageBox, QFrame, QSpinBox, QComboBox, QCheckBox
 )
@@ -14,13 +14,15 @@ from webdriver_manager.chrome import ChromeDriverManager
 import os
 import time
 from urllib.parse import urljoin, urlparse
+from utils.app_theme import AppTheme
 
 class WebScraper(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.theme = AppTheme()
         self.setup_ui()
         self.driver = None
-        self.visited_content = {}  # Store content for single file output
+        self.visited_content = {}
 
     def setup_ui(self):
         layout = QVBoxLayout(self)
@@ -29,7 +31,7 @@ class WebScraper(QWidget):
 
         # Title
         title = QLabel("Web Content Converter")
-        title.setStyleSheet("font-size: 24px; color: white;")
+        title.setStyleSheet("font-size: 24px; color: white; margin-bottom: 20px;")
         layout.addWidget(title)
 
         # Content Frame
@@ -55,7 +57,7 @@ class WebScraper(QWidget):
         self.url_input.setStyleSheet("""
             QLineEdit {
                 padding: 8px;
-                background: #363636;
+                background: #2d2d2d;
                 border: 1px solid #3d3d3d;
                 border-radius: 4px;
                 color: white;
@@ -89,10 +91,11 @@ class WebScraper(QWidget):
         output_layout.addWidget(self.use_custom_output)
         content_layout.addLayout(output_layout)
 
+        # Output Directory Widget
         self.output_widget = QWidget()
         output_widget_layout = QVBoxLayout(self.output_widget)
         output_widget_layout.setContentsMargins(0, 0, 0, 0)
-        
+
         output_label = QLabel("Output Directory")
         output_label.setStyleSheet("color: #888; font-size: 12px;")
         output_widget_layout.addWidget(output_label)
@@ -118,10 +121,10 @@ class WebScraper(QWidget):
         path_layout.addWidget(self.output_path)
         path_layout.addWidget(browse_btn)
         output_widget_layout.addLayout(path_layout)
-        
+
         content_layout.addWidget(self.output_widget)
         self.output_widget.hide()
-        
+
         self.use_custom_output.toggled.connect(self.output_widget.setVisible)
 
         # Options
@@ -138,7 +141,7 @@ class WebScraper(QWidget):
         self.format_combo.setStyleSheet("""
             QComboBox {
                 padding: 8px;
-                background: #363636;
+                background: #2d2d2d;
                 border: 1px solid #3d3d3d;
                 border-radius: 4px;
                 color: white;
@@ -173,7 +176,7 @@ class WebScraper(QWidget):
         self.depth_spin.setStyleSheet("""
             QSpinBox {
                 padding: 8px;
-                background: #363636;
+                background: #2d2d2d;
                 border: 1px solid #3d3d3d;
                 border-radius: 4px;
                 color: white;
@@ -231,7 +234,7 @@ class WebScraper(QWidget):
         convert_btn = QPushButton("Convert")
         convert_btn.setStyleSheet("""
             QPushButton {
-                padding: 12px;
+                padding: 12px 24px;
                 background: #4a90e2;
                 border: none;
                 border-radius: 4px;
@@ -302,28 +305,28 @@ class WebScraper(QWidget):
         soup = BeautifulSoup(html_content, 'html.parser')
         base_url = urlparse(url).scheme + "://" + urlparse(url).netloc
         links = []
-        
+
         for link in soup.find_all('a', href=True):
             href = link['href']
             full_url = urljoin(base_url, href)
-            
+
             # Only include links from the same domain
             if urlparse(full_url).netloc == urlparse(base_url).netloc:
                 links.append(full_url)
-        
+
         return list(set(links))  # Remove duplicates
 
     def crawl_and_convert(self, url, depth, visited=None):
         if visited is None:
             visited = set()
-        
+
         if depth < 0 or url in visited:
             return
-        
+
         visited.add(url)
         try:
             html_content = self.get_page_content(url)
-            
+
             # Store content based on format
             if self.format_combo.currentText() == "Markdown":
                 content = self.convert_to_markdown(html_content)
@@ -350,7 +353,7 @@ class WebScraper(QWidget):
                 links = self.get_links(url, html_content)
                 for link in links:
                     self.crawl_and_convert(link, depth - 1, visited)
-                    
+
         except Exception as e:
             print(f"Error processing {url}: {str(e)}")
 
@@ -403,7 +406,7 @@ class WebScraper(QWidget):
 
     def start_conversion(self):
         url = self.url_input.text()
-        
+
         if not url:
             QMessageBox.warning(self, "Error", "Please enter a URL")
             return
@@ -418,7 +421,7 @@ class WebScraper(QWidget):
 
             # Get output directory (either custom or default)
             output_dir = self.get_output_directory()
-            
+
             # Create output directory structure
             os.makedirs(output_dir, exist_ok=True)
 
@@ -451,7 +454,7 @@ class WebScraper(QWidget):
         except Exception as e:
             self.progress.hide()
             QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
-        
+
         finally:
             self.cleanup_selenium()
 

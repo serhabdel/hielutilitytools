@@ -4,5 +4,10 @@
     "image_tools": "Herramientas de Imagen",
     "ppt_tools": "Herramientas de Presentación",
     "color_tools": "Herramientas de Color",
-    "toggle_theme": "Cambiar Tema"
+    "toggle_theme": "Cambiar Tema",
+    "theme_tokyo_night": "Noche de Tokio",
+    "theme_solarized_dark": "Solarizado Oscuro",
+    "theme_solarized_light": "Solarizado Claro",
+    "theme_dracula": "Drácula",
+    "theme_nord": "Nord"
 }

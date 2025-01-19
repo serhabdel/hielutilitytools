@@ -6,6 +6,8 @@ class AppTheme:
     TOKYO_NIGHT = "tokyo_night"
     SOLARIZED = "solarized"
     LIGHT = "light"
+    DRACULA = "dracula"
+    NORD = "nord"
 
     def __init__(self, theme_name=TOKYO_NIGHT):
         self.theme_name = theme_name
@@ -60,6 +62,40 @@ class AppTheme:
                 "active_item_bg": "rgba(37, 99, 235, 0.1)",
                 "active_item_text": "#2563EB",
                 "hover_bg": "rgba(241, 245, 249, 0.8)"
+            },
+            self.DRACULA: {
+                "background_dark": "#282a36",
+                "background_mid": "#44475a",
+                "background_light": "#6272a4",
+                "accent_primary": "#bd93f9",
+                "accent_secondary": "#ff79c6",
+                "accent_success": "#50fa7b",
+                "text_color": "#f8f8f2",
+                "muted_text": "#6272a4",
+                "border_color": "#44475a",
+                "tab_selected": "#bd93f9",
+                "tab_hover": "rgba(189, 147, 249, 0.1)",
+                "sidebar_bg": "#282a36",
+                "active_item_bg": "rgba(189, 147, 249, 0.1)",
+                "active_item_text": "#bd93f9",
+                "hover_bg": "rgba(68, 71, 90, 0.8)"
+            },
+            self.NORD: {
+                "background_dark": "#2e3440",
+                "background_mid": "#3b4252",
+                "background_light": "#4c566a",
+                "accent_primary": "#88c0d0",
+                "accent_secondary": "#81a1c1",
+                "accent_success": "#a3be8c",
+                "text_color": "#e5e9f0",
+                "muted_text": "#4c566a",
+                "border_color": "#3b4252",
+                "tab_selected": "#88c0d0",
+                "tab_hover": "rgba(136, 192, 208, 0.1)",
+                "sidebar_bg": "#2e3440",
+                "active_item_bg": "rgba(136, 192, 208, 0.1)",
+                "active_item_text": "#88c0d0",
+                "hover_bg": "rgba(59, 66, 82, 0.8)"
             }
         }
 

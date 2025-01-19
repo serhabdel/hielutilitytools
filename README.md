@@ -57,6 +57,8 @@ If you find this tool helpful, consider supporting the development by buying me 
 - Tokyo Night (Default)
 - Solarized Dark
 - Solarized Light
+- Dracula
+- Nord
 
 ## 🌐 Supported Languages
 - English

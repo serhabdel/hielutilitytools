@@ -34,5 +34,10 @@
     "success_processing": "Traitement terminé avec succès",
     "placeholder_search": "Rechercher des outils...",
     "placeholder_file": "Sélectionner un fichier...",
-    "placeholder_output": "Choisir l'emplacement de sortie..."
+    "placeholder_output": "Choisir l'emplacement de sortie...",
+    "theme_tokyo_night": "Nuit de Tokyo",
+    "theme_solarized_dark": "Sombre Solarisé",
+    "theme_solarized_light": "Clair Solarisé",
+    "theme_dracula": "Dracula",
+    "theme_nord": "Nord"
 }

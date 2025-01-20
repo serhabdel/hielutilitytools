@@ -19,6 +19,7 @@ from src.presentation.viewmodels.image_resizer_viewmodel import ImageResizerView
 from src.presentation.viewmodels.background_remover_viewmodel import BackgroundRemoverViewModel
 from src.presentation.viewmodels.image_upscaler_viewmodel import ImageUpscalerViewModel
 from src.presentation.viewmodels.logo_converter_viewmodel import LogoConverterViewModel
+from src.presentation.viewmodels.android_logo_viewmodel import AndroidLogoViewModel
 from src.infrastructure.image_services.logo_converter import LogoConverter
 
 class MainWindow(QMainWindow):
@@ -73,6 +74,11 @@ class MainWindow(QMainWindow):
         
         self.logo_converter_vm = LogoConverterViewModel()
         self.logo_converter_vm.error_occurred.connect(self.show_error)
+        
+        self.android_logo_vm = AndroidLogoViewModel()
+        self.android_logo_vm.progress_updated.connect(lambda v: self.android_progress_bar.setValue(v))
+        self.android_logo_vm.generation_completed.connect(self.android_generation_completed)
+        self.android_logo_vm.error_occurred.connect(self.show_error)
         
         # Create central widget and main layout
         central_widget = QWidget()
@@ -608,38 +614,104 @@ class MainWindow(QMainWindow):
         tab = QWidget()
         layout = QVBoxLayout(tab)
         
-        # Input file selection
-        input_layout = QHBoxLayout()
-        self.android_logo_input_path = QLineEdit()
-        self.android_logo_input_path.setPlaceholderText("Select image file (recommended: 512x512 PNG)...")
-        browse_btn = QPushButton("Browse")
-        browse_btn.clicked.connect(lambda: self.browse_image(self.android_logo_input_path))
-        input_layout.addWidget(self.android_logo_input_path)
-        input_layout.addWidget(browse_btn)
-        layout.addLayout(input_layout)
-        
         # Info text
-        info_text = QTextEdit()
-        info_text.setReadOnly(True)
-        info_text.setMaximumHeight(100)
-        info_text.setText(
-            "This will create the following Android icon sizes:\n"
-            "- mipmap-mdpi: 48x48\n"
-            "- mipmap-hdpi: 72x72\n"
-            "- mipmap-xhdpi: 96x96\n"
-            "- mipmap-xxhdpi: 144x144\n"
-            "- mipmap-xxxhdpi: 192x192\n"
-            "- Play Store: 512x512"
+        info_text = QLabel(
+            "Generate Android app icons in various densities.\n"
+            "Supports both mipmap and drawable resources."
         )
+        info_text.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(info_text)
+        
+        # Input group
+        input_group = QGroupBox("Input Image")
+        input_layout = QVBoxLayout()
+        
+        # File selection
+        file_layout = QHBoxLayout()
+        self.android_input_path = QLineEdit()
+        self.android_input_path.setPlaceholderText("Select PNG image...")
+        browse_btn = QPushButton("Browse")
+        browse_btn.clicked.connect(lambda: self.browse_file_with_target("PNG files (*.png)", self.android_input_path))
+        file_layout.addWidget(self.android_input_path)
+        file_layout.addWidget(browse_btn)
+        input_layout.addLayout(file_layout)
+        
+        # Output directory selection
+        output_layout = QHBoxLayout()
+        self.android_output_path = QLineEdit()
+        self.android_output_path.setPlaceholderText("Output directory (optional)...")
+        browse_output_btn = QPushButton("Browse")
+        browse_output_btn.clicked.connect(self.browse_android_output_dir)
+        output_layout.addWidget(self.android_output_path)
+        output_layout.addWidget(browse_output_btn)
+        input_layout.addLayout(output_layout)
+        
+        input_group.setLayout(input_layout)
+        layout.addWidget(input_group)
         
         # Generate button
         generate_btn = QPushButton("Generate Android Icons")
         generate_btn.clicked.connect(self.generate_android_icons)
         layout.addWidget(generate_btn)
         
+        # Progress bar
+        self.android_progress_bar = QProgressBar()
+        self.android_progress_bar.setTextVisible(True)
+        self.android_progress_bar.setFormat("%p%")
+        layout.addWidget(self.android_progress_bar)
+        
+        # Output preview
+        output_group = QGroupBox("Generated Icons")
+        output_layout = QVBoxLayout()
+        self.android_output_list = QListWidget()
+        output_layout.addWidget(self.android_output_list)
+        output_group.setLayout(output_layout)
+        layout.addWidget(output_group)
+        
         layout.addStretch()
-        self.tab_widget.addTab(tab, "Android Logo Generator")
+        self.tab_widget.addTab(tab, "Android Icons")
+    
+    def browse_android_output_dir(self):
+        dir_path = QFileDialog.getExistingDirectory(
+            self, "Select Output Directory", str(Path.home())
+        )
+        if dir_path:
+            self.android_output_path.setText(dir_path)
+    
+    def generate_android_icons(self):
+        input_path = self.android_input_path.text()
+        output_dir = self.android_output_path.text() or None
+        
+        if not input_path:
+            QMessageBox.warning(self, "Error", "Please select an input image")
+            return
+        
+        # Reset UI
+        self.android_progress_bar.setValue(0)
+        self.android_output_list.clear()
+        
+        try:
+            # Generate Android icons
+            self.android_logo_vm.generate_android_icons(input_path, output_dir)
+        except Exception as e:
+            QMessageBox.critical(self, "Generation Error", str(e))
+    
+    def android_generation_completed(self, output_paths):
+        # Clear previous items
+        self.android_output_list.clear()
+        
+        # Add generated paths to the list
+        for folder, path in output_paths.items():
+            item = QListWidgetItem(f"{folder}: {os.path.basename(path)}")
+            item.setToolTip(path)
+            self.android_output_list.addItem(item)
+        
+        # Show success message
+        QMessageBox.information(
+            self,
+            "Generation Complete",
+            f"Successfully generated {len(output_paths)} Android icons"
+        )
     
     def browse_image(self, target: QLineEdit = None):
         file_path, _ = QFileDialog.getOpenFileName(
@@ -652,11 +724,6 @@ class MainWindow(QMainWindow):
             if target is None:
                 target = self.logo_input_path
             target.setText(file_path)
-    
-    def generate_android_icons(self):
-        self.image_resizer_vm.create_android_icons(
-            input_path=self.android_logo_input_path.text()
-        )
     
     def setup_background_remover_tab(self):
         tab = QWidget()

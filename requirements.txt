@@ -1,0 +1,17 @@
+PySide6>=6.5.0
+pdf2image>=1.16.3
+pdf2docx==0.5.6
+python-docx>=0.8.11
+docx2pdf>=0.1.8
+PyMuPDF>=1.21.1
+tabula-py>=2.7.0
+pandas>=1.5.3
+openpyxl>=3.1.2
+Pillow>=9.5.0
+python-pptx>=0.6.21
+rembg>=2.0.50
+requests>=2.31.0
+beautifulsoup4>=4.12.2
+img2pdf>=0.4.4
+pywin32>=306
+comtypes>=1.2.0
